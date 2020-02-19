@@ -27,4 +27,16 @@ describe "event api" do
     expect(events["data"]["attributes"]['name']).to eq('new event')
     expect(events["data"]["attributes"]['details']).to eq('this is a test event')
   end
+
+  it "user must post with name", :vcr do
+    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+
+    post "/api/v1/events", headers:headers
+
+    expect(response.status).to eq(401)
+
+    results = JSON.parse(response.body, symbolize_names: true)
+    
+    expect(results[:errors]).to eq('missing name')
+  end
 end
