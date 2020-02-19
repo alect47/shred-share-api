@@ -23,7 +23,7 @@ describe "event api" do
     expect(response).to be_successful
 
     events = JSON.parse(response.body)
-    # binding.pry
+    
     expect(events["data"]["attributes"]['name']).to eq('new event')
     expect(events["data"]["attributes"]['details']).to eq('this is a test event')
   end
@@ -36,7 +36,7 @@ describe "event api" do
     expect(response.status).to eq(401)
 
     results = JSON.parse(response.body, symbolize_names: true)
-    
+
     expect(results[:errors]).to eq('missing name')
   end
 end

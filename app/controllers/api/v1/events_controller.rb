@@ -5,7 +5,6 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def create
-    prms = event_params
     @event = Event.new(event_params)
     if @event.save
         render json: EventSerializer.new(@event)
