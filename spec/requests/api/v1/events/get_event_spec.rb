@@ -9,8 +9,21 @@ describe "event api" do
     expect(response).to be_successful
 
     events = JSON.parse(response.body)
-    
+
     expect(events["data"][0]["attributes"]['name']).to eq('MyString')
     expect(events["data"].count).to eq(3)
+  end
+
+  it "user can post events", :vcr do
+    event_info = '{"name": "new event", "details": "this is a test event"}'
+    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+
+    post "/api/v1/events", params: event_info, headers:headers
+
+    expect(response).to be_successful
+
+    events = JSON.parse(response.body)
+
+    expect(events["data"][0]["attributes"]['name']).to eq('MyString')
   end
 end
