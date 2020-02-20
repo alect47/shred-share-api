@@ -13,6 +13,7 @@ describe "event api" do
     expect(events["data"][0]["attributes"]['name']).to eq('MyString')
     expect(events["data"].count).to eq(3)
   end
+
   it "user can get specific event", :vcr do
     event = create(:event, name: 'testing event', details: 'this is a test', id: 7)
 
@@ -21,9 +22,21 @@ describe "event api" do
     expect(response).to be_successful
 
     event = JSON.parse(response.body)
-    
+
     expect(event["data"]["attributes"]['name']).to eq('testing event')
     expect(event["data"]["attributes"]['details']).to eq('this is a test')
+  end
+
+  it "invalid id", :vcr do
+    event = create(:event, name: 'testing event', details: 'this is a test', id: 7)
+
+    get "/api/v1/events/8"
+
+    expect(response.status).to eq(404)
+
+    results = JSON.parse(response.body, symbolize_names: true)
+
+    expect(results[:errors]).to eq('invalid id')
   end
 
   it "user can post events", :vcr do
