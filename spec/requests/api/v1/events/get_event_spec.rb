@@ -21,9 +21,9 @@ describe "event api" do
     expect(response).to be_successful
 
     event = JSON.parse(response.body)
-
-    expect(events["data"]["attributes"]['name']).to eq('testing event')
-    expect(events["data"]["attributes"]['name']).to eq('this is a test')
+    
+    expect(event["data"]["attributes"]['name']).to eq('testing event')
+    expect(event["data"]["attributes"]['details']).to eq('this is a test')
   end
 
   it "user can post events", :vcr do
