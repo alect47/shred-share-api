@@ -5,8 +5,13 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def show
-    event = Event.find(event_params[:id])
-    render json: EventSerializer.new(event)
+    id = event_params[:id]
+    if Event.exists?(id)
+      event = Event.find(id)
+      render json: EventSerializer.new(event)
+    else
+      render json: { errors: "invalid id"}, status: 404
+    end
   end
 
   def create
