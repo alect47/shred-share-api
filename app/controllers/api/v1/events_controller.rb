@@ -4,6 +4,11 @@ class Api::V1::EventsController < ApplicationController
     render json: EventSerializer.new(Event.all)
   end
 
+  def show
+    event = Event.find(event_params[:id])
+    render json: EventSerializer.new(event)
+  end
+
   def create
     @event = Event.new(event_params)
     if @event.save
@@ -16,6 +21,6 @@ class Api::V1::EventsController < ApplicationController
 private
 
   def event_params
-    params.permit(:name, :details)
+    params.permit(:name, :details, :id)
   end
 end
