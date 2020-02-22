@@ -64,4 +64,20 @@ describe "event api" do
 
     expect(results[:errors]).to eq('missing name')
   end
+
+  it "user can update event", :vcr do
+    event = create(:event, name: 'testing event', details: 'this is a test', id: 7)
+
+    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+    event_info = '{"name": "change event", "details": "this is an update"}'
+
+    patch "/api/v1/events/7", params: event_info, headers:headers
+
+    expect(response).to be_successful
+
+    event = JSON.parse(response.body)
+
+    expect(event["data"]["attributes"]['name']).to eq('change event')
+    expect(event["data"]["attributes"]['details']).to eq('this is an update')
+  end
 end
