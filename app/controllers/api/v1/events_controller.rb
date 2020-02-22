@@ -24,11 +24,14 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def update
+    # binding.pry
     id = event_params[:id]
     if Event.exists?(id)
       event = Event.find(id)
       if event.update(event_params)
         render json: EventSerializer.new(event)
+      else
+        render json: { errors: "Poorly formatted request"}, status: 400
       end
     else
       render json: { errors: "invalid id or poorly formatted request"}, status: 404
