@@ -94,4 +94,17 @@ describe "event api" do
 
     expect(results[:errors]).to eq('invalid id or poorly formatted request')
   end
+  it "sends error message if poorly formatted", :vcr do
+    event = create(:event, name: 'testing event', details: 'this is a test', id: 7)
+
+    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+
+    patch "/api/v1/events/7", headers:headers
+
+    expect(response.status).to eq(400)
+
+    results = JSON.parse(response.body, symbolize_names: true)
+
+    expect(results[:errors]).to eq('Poorly formatted request')
+  end
 end
