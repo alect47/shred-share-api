@@ -80,4 +80,18 @@ describe "event api" do
     expect(event["data"]["attributes"]['name']).to eq('change event')
     expect(event["data"]["attributes"]['details']).to eq('this is an update')
   end
+  it "sends error message if invalid id", :vcr do
+    event = create(:event, name: 'testing event', details: 'this is a test', id: 7)
+
+    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+    event_info = '{"name": "change event", "details": "this is an update"}'
+
+    patch "/api/v1/events/8", params: event_info, headers:headers
+
+    expect(response.status).to eq(404)
+
+    results = JSON.parse(response.body, symbolize_names: true)
+
+    expect(results[:errors]).to eq('invalid id or poorly formatted request')
+  end
 end
