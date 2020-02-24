@@ -95,4 +95,13 @@ describe "event api" do
     expect(results[:errors]).to eq('invalid id or poorly formatted request')
   end
 
+  it "user can delete event", :vcr do
+    event = create(:event, name: 'testing event', details: 'this is a test', id: 7)
+
+    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+
+    delete "/api/v1/events/7" 
+
+    expect(response.status).to eq(204)
+  end
 end
