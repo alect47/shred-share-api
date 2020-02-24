@@ -34,6 +34,15 @@ class Api::V1::EventsController < ApplicationController
     end
   end
 
+  def destroy
+    if Event.exists?(event_params[:id])
+      event = Event.find(event_params[:id])
+      event.destroy
+    else
+      render json: { errors: "invalid id or poorly formatted request"}, status: 404
+    end
+  end
+
 private
 
   def event_params
