@@ -1,9 +1,11 @@
 class User < ApplicationRecord
-  has_many :user_events
-  has_many :events, through: :user_events
-  validates_presence_of :user_name
-  validates_presence_of :email
+  has_secure_password
 
-  enum role: { reg_user: 0, admin: 1 }
+  validates :username, presence: true
+  validates :username, uniqueness: true
+  validates :username, length: { minimum: 4 }
+  validates :email, presence: true
+  validates :email, uniqueness: true
 
+  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
 end
